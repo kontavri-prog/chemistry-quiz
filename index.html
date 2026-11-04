@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вікторина з хімії</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #10172e, #203b64);
+  color: white;
+  padding: 20px;
+}
+
+.quiz {
+  width: 100%;
+  max-width: 550px;
+  background: #182642;
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 0 15px 50px #0007;
+}
+
+h1 { text-align: center; font-size: 27px; }
+
+.tag {
+  text-align: center;
+  color: #69d9ff;
+  margin-bottom: 25px;
+}
+
+.question {
+  font-size: 19px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.formula {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  padding: 18px;
+  background: #253a5c;
+  border-radius: 12px;
+  margin-bottom: 22px;
+}
+
+.answers {
+  display: grid;
+  gap: 12px;
+}
+
+button {
+  padding: 15px;
+  border: 2px solid #456080;
+  border-radius: 12px;
+  background: #253a5c;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover:not(:disabled) {
+  background: #345783;
+  border-color: #69d9ff;
+}
+
+button:disabled { cursor: default; opacity: 0.85; }
+
+#result {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+#restart {
+  display: none;
+  width: 100%;
+  margin-top: 15px;
+  background: #176c91;
+}
+</style>
+</head>
+<body>
+
+<div class="quiz">
+  <div class="tag">🧪 ХІМІЧНА ВІКТОРИНА</div>
+  <h1>Перевір свої знання!</h1>
+
+  <div class="question">
+    Цей елемент є основним паливом зір. Його атом має лише один електрон.
+    Яку електронну формулу потрібно обрати, щоб описати цей атом?
+  </div>
+
+  <div class="formula">H — ?</div>
+
+  <div class="answers">
+    <button onclick="answer(0)">A. 1s¹</button>
+    <button onclick="answer(1)">B. 1s²</button>
+    <button onclick="answer(2)">C. 2s¹</button>
+    <button onclick="answer(3)">D. 2s²</button>
+  </div>
+
+  <div id="result"></div>
+  <button id="restart" onclick="restartQuiz()">Спробувати ще раз</button>
+</div>
+
+<script>
+function answer(choice) {
+  const buttons = document.querySelectorAll(".answers button");
+  const result = document.getElementById("result");
+
+  buttons.forEach(button => button.disabled = true);
+
+  if (choice === 0) {
+    result.textContent = "✅ Правильно! Гідроген має один електрон: 1s¹.";
+    result.style.color = "#62e69a";
+    buttons[0].style.borderColor = "#62e69a";
+  } else {
+    result.textContent = "❌ Неправильно! Правильна відповідь — A. 1s¹.";
+    result.style.color = "#ff8585";
+    buttons[0].style.borderColor = "#62e69a";
+    buttons[choice].style.borderColor = "#ff8585";
+  }
+
+  document.getElementById("restart").style.display = "block";
+}
+
+function restartQuiz() {
+  location.reload();
+}
+</script>
+
+</body>
+</html>
