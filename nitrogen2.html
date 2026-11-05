@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Нітроген N — Вікторина</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: linear-gradient(135deg, #07152f, #123c70, #07152f);
+}
+
+.card {
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    border-radius: 22px;
+    background: rgba(8, 23, 48, 0.96);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+}
+
+h1 {
+    text-align: center;
+    color: #65b5ff;
+    margin-top: 0;
+}
+
+.progress {
+    text-align: center;
+    color: #a9c9ed;
+    margin-bottom: 20px;
+}
+
+.question {
+    font-size: 19px;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.answers {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.answer {
+    padding: 15px;
+    border: 2px solid #28558a;
+    border-radius: 12px;
+    background: #102c50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: 0.2s;
+}
+
+.answer:hover:not(:disabled) {
+    background: #1b4779;
+    border-color: #65b5ff;
+}
+
+.answer:disabled {
+    cursor: default;
+    opacity: 1;
+}
+
+.correct {
+    background: #176b45;
+    border-color: #35d68b;
+}
+
+.wrong {
+    background: #782d39;
+    border-color: #ff687a;
+}
+
+.feedback {
+    display: none;
+    margin-top: 18px;
+    padding: 15px;
+    border-radius: 12px;
+    line-height: 1.5;
+    background: #142f50;
+}
+
+.next {
+    display: none;
+    width: 100%;
+    margin-top: 25px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #438cf5;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.next:hover {
+    background: #286dcc;
+}
+
+.result {
+    display: none;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.score {
+    font-size: 32px;
+    color: #65b5ff;
+    font-weight: bold;
+    margin: 20px;
+}
+
+.review {
+    text-align: left;
+    margin-top: 20px;
+    padding: 15px;
+    background: #102c50;
+    border-radius: 12px;
+}
+
+.room {
+    display: block;
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 12px;
+    background: #438cf5;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.room:hover {
+    background: #286dcc;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div id="quiz">
+        <h1>Нітроген (N)</h1>
+
+        <div class="progress" id="progress"></div>
+
+        <div class="question" id="question"></div>
+
+        <div class="answers" id="answers"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button class="next" id="next" onclick="nextQuestion()">
+            Наступне питання →
+        </button>
+    </div>
+
+    <div class="result" id="result">
+        <h1>Вікторину завершено!</h1>
+
+        <div class="score" id="score"></div>
+
+        <p id="resultText"></p>
+
+        <div class="review" id="review"></div>
+
+        <a class="room" href="https://rooms.xyz/kontavri/n2">
+            ← Повернутися в кімнату
+        </a>
+    </div>
+
+</div>
+
+<script>
+const questions = [
+    {
+        question: "Атом Нітрогену має порядковий номер 7. Яка його електронна конфігурація?",
+        answers: [
+            "1s² 2s² 2p³",
+            "1s² 2s² 2p⁴",
+            "1s² 2s¹ 2p⁴",
+            "1s² 2s² 2p²"
+        ],
+        correct: 0,
+        explanation: "Молодець! Нітроген має 7 електронів: 2 на першому рівні та 5 на другому. Конфігурація — 1s² 2s² 2p³."
+    },
+    {
+        question: "Молекула азоту N₂ складається з...",
+        answers: [
+            "Одного атома",
+            "Двох атомів",
+            "Трьох атомів",
+            "Чотирьох атомів"
+        ],
+        correct: 1,
+        explanation: "Правильно! Індекс 2 у формулі N₂ означає, що молекула складається з двох атомів Нітрогену."
+    },
+    {
+        question: "У яких формах рослини переважно засвоюють Нітроген із ґрунту?",
+        answers: [
+            "У вигляді кисню та водню",
+            "У вигляді азоту N₂ з повітря",
+            "У вигляді нітрат-іонів NO₃⁻ та амоній-іонів NH₄⁺",
+            "У вигляді вуглекислого газу CO₂"
+        ],
+        correct: 2,
+        explanation: "Чудово! Рослини переважно поглинають Нітроген коренями у формі нітрат-іонів NO₃⁻ та амоній-іонів NH₄⁺."
+    }
+];
+
+let current = 0;
+let score = 0;
+let mistakes = [];
+
+function showQuestion() {
+    const q = questions[current];
+
+    document.getElementById("progress").textContent =
+        "Питання " + (current + 1) + " із " + questions.length;
+
+    document.getElementById("question").textContent = q.question;
+
+    const answers = document.getElementById("answers");
+    answers.innerHTML = "";
+
+    q.answers.forEach((answer, index) => {
+        const button = document.createElement("button");
+        button.className = "answer";
+        button.textContent = answer;
+        button.onclick = () => selectAnswer(index);
+        answers.appendChild(button);
+    });
+
+    document.getElementById("feedback").style.display = "none";
+    document.getElementById("next").style.display = "none";
+}
+
+function selectAnswer(index) {
+    const q = questions[current];
+    const buttons = document.querySelectorAll(".answer");
+
+    buttons.forEach((button, i) => {
+        button.disabled = true;
+
+        if (i === q.correct) {
+            button.classList.add("correct");
+        }
+
+        if (i === index && index !== q.correct) {
+            button.classList.add("wrong");
+        }
+    });
+
+    const feedback = document.getElementById("feedback");
+    feedback.style.display = "block";
+
+    if (index === q.correct) {
+        score++;
+        feedback.textContent = "✓ Правильно! " + q.explanation;
+    } else {
+        feedback.textContent = "✗ Не зовсім правильно. " + q.explanation;
+
+        mistakes.push({
+            question: q.question,
+            answer: q.answers[index],
+            correct: q.answers[q.correct]
+        });
+    }
+
+    document.getElementById("next").style.display = "block";
+
+    if (current === questions.length - 1) {
+        document.getElementById("next").textContent = "Показати результат";
+    }
+}
+
+function nextQuestion() {
+    current++;
+
+    if (current < questions.length) {
+        document.getElementById("next").textContent = "Наступне питання →";
+        showQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("score").textContent =
+        score + " із " + questions.length;
+
+    document.getElementById("resultText").textContent =
+        score === 3
+        ? "Відмінно! Ти чудово знаєш Нітроген!"
+        : score === 2
+        ? "Молодець! Але є ще що повторити."
+        : "Не засмучуйся! Повтори матеріал і спробуй ще раз.";
+
+    const review = document.getElementById("review");
+
+    if (mistakes.length === 0) {
+        review.textContent = "Усі відповіді правильні! Помилок немає.";
+    } else {
+        review.innerHTML = "<strong>Твої помилки:</strong>";
+
+        mistakes.forEach((mistake, index) => {
+            const item = document.createElement("p");
+            item.textContent =
+                (index + 1) + ". " + mistake.question +
+                " Твоя відповідь: " + mistake.answer +
+                ". Правильна відповідь: " + mistake.correct + ".";
+
+            review.appendChild(item);
+        });
+    }
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
