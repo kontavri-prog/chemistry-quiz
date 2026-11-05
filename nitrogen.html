@@ -1,1 +1,364 @@
 
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вікторина — Нітроген (N)</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: linear-gradient(135deg, #101a35, #243b65);
+}
+
+.card {
+    width: 100%;
+    max-width: 650px;
+    padding: 30px;
+    border-radius: 22px;
+    background: #182744;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.subtitle {
+    text-align: center;
+    color: #a9c5f5;
+    margin-bottom: 25px;
+}
+
+.progress {
+    height: 8px;
+    background: #344563;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #54a0ff;
+    transition: width 0.3s;
+}
+
+.question {
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.answers {
+    display: grid;
+    gap: 12px;
+}
+
+.answer {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #405579;
+    border-radius: 12px;
+    background: #243858;
+    color: white;
+    font-size: 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.answer:hover:not(:disabled) {
+    background: #34517e;
+    border-color: #65a5ff;
+}
+
+.answer:disabled {
+    cursor: default;
+    opacity: 1;
+}
+
+.correct {
+    background: #17633d;
+    border-color: #35d18a;
+}
+
+.wrong {
+    background: #762e3a;
+    border-color: #ff6878;
+}
+
+.feedback {
+    margin-top: 18px;
+    padding: 15px;
+    border-radius: 12px;
+    line-height: 1.5;
+    display: none;
+    background: #263d5e;
+}
+
+.next {
+    display: none;
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #438cf5;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.next:hover {
+    background: #2e75dc;
+}
+
+.result {
+    display: none;
+    text-align: center;
+}
+
+.result h2 {
+    font-size: 28px;
+}
+
+.review {
+    text-align: left;
+    margin-top: 25px;
+    line-height: 1.6;
+}
+
+.review-item {
+    padding: 14px;
+    margin-bottom: 12px;
+    background: #243858;
+    border-radius: 12px;
+}
+
+.return {
+    display: block;
+    width: 100%;
+    margin-top: 25px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #438cf5;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>⚛️ Нітроген (N)</h1>
+    <div class="subtitle">Перевір свої знання з хімії</div>
+
+    <div id="quiz">
+        <div class="progress">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+
+        <div id="counter"></div>
+        <div class="question" id="question"></div>
+        <div class="answers" id="answers"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button class="next" id="next" onclick="nextQuestion()">
+            Наступне питання
+        </button>
+    </div>
+
+    <div class="result" id="result">
+        <h2>🎉 Вікторину завершено!</h2>
+        <h1 id="score"></h1>
+        <p id="message"></p>
+
+        <div class="review" id="review"></div>
+
+        <button class="return" onclick="returnToRoom()">
+            ↩ Повернутися до кімнати
+        </button>
+    </div>
+
+</div>
+
+<script>
+
+const questions = [
+    {
+        question: "Хоча цей газ становить близько 78% земної атмосфери, у чистому вигляді повітря з ним не засвоюється рослинами безпосередньо. Порядковий номер елемента — 7. Яка електронна формула пояснює розміщення цих електронів?",
+        answers: [
+            "1s² 2s² 2p²",
+            "1s² 2s² 2p³",
+            "1s² 2s² 2p⁴",
+            "1s² 2s¹ 2p⁴"
+        ],
+        correct: 1,
+        explanation: "Правильно! Нітроген має 7 електронів. Його електронна формула — 1s² 2s² 2p³."
+    },
+    {
+        question: "Проста речовина азот за звичайних умов складається з двоатомних молекул N₂. Скільки атомів Нітрогену містить одна така молекула?",
+        answers: [
+            "1 атом",
+            "3 атоми",
+            "2 атоми",
+            "4 атоми"
+        ],
+        correct: 2,
+        explanation: "Молекула N₂ складається з двох атомів Нітрогену, з'єднаних міцним потрійним зв'язком."
+    },
+    {
+        question: "Рослини не можуть безпосередньо засвоювати молекулярний азот N₂ з повітря. У яких формах вони можуть поглинати Нітроген із ґрунту?",
+        answers: [
+            "У вигляді кисню та водню",
+            "У вигляді нітрат-іонів та амоній-іонів",
+            "У вигляді молекул азоту N₂",
+            "У вигляді вуглекислого газу"
+        ],
+        correct: 1,
+        explanation: "Рослини засвоюють Нітроген переважно у формі нітрат-іонів NO₃⁻ та амоній-іонів NH₄⁺."
+    }
+];
+
+let current = 0;
+let score = 0;
+let userAnswers = [];
+
+function showQuestion() {
+    const q = questions[current];
+
+    document.getElementById("counter").textContent =
+        `Питання ${current + 1} із ${questions.length}`;
+
+    document.getElementById("progress").style.width =
+        `${(current / questions.length) * 100}%`;
+
+    document.getElementById("question").textContent = q.question;
+
+    const answers = document.getElementById("answers");
+    answers.innerHTML = "";
+
+    q.answers.forEach((answer, index) => {
+        const button = document.createElement("button");
+        button.className = "answer";
+        button.textContent = `${String.fromCharCode(65 + index)}) ${answer}`;
+        button.onclick = () => selectAnswer(index);
+        answers.appendChild(button);
+    });
+
+    document.getElementById("feedback").style.display = "none";
+    document.getElementById("next").style.display = "none";
+}
+
+function selectAnswer(index) {
+    const q = questions[current];
+    const buttons = document.querySelectorAll(".answer");
+
+    buttons.forEach(button => button.disabled = true);
+
+    userAnswers[current] = index;
+
+    const feedback = document.getElementById("feedback");
+
+    if (index === q.correct) {
+        score++;
+        buttons[index].classList.add("correct");
+        feedback.innerHTML = "✅ <b>Правильно!</b><br>" + q.explanation;
+    } else {
+        buttons[index].classList.add("wrong");
+        buttons[q.correct].classList.add("correct");
+
+        feedback.innerHTML =
+            "❌ <b>Неправильно!</b><br>" +
+            "Правильна відповідь: " + q.answers[q.correct] +
+            "<br>" + q.explanation;
+    }
+
+    feedback.style.display = "block";
+
+    const next = document.getElementById("next");
+    next.style.display = "block";
+
+    next.textContent =
+        current === questions.length - 1
+        ? "Показати результат"
+        : "Наступне питання";
+}
+
+function nextQuestion() {
+    current++;
+
+    if (current < questions.length) {
+        showQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("score").textContent =
+        `${score} із ${questions.length}`;
+
+    document.getElementById("message").textContent =
+        score === 3 ? "Чудовий результат! 🏆" :
+        score === 2 ? "Дуже добре! 👍" :
+        score === 1 ? "Непогано! Повтори матеріал." :
+        "Не засмучуйся! Спробуй ще раз.";
+
+    const review = document.getElementById("review");
+
+    review.innerHTML = "<h3>Розбір відповідей:</h3>";
+
+    questions.forEach((q, index) => {
+        const chosen = userAnswers[index];
+
+        review.innerHTML += `
+            <div class="review-item">
+                <b>${index + 1}. ${q.question}</b><br>
+                Твоя відповідь: ${q.answers[chosen]}<br>
+                ${chosen === q.correct
+                    ? "✅ Правильно!"
+                    : "❌ Правильна відповідь: " + q.answers[q.correct]}
+                <br><small>${q.explanation}</small>
+            </div>
+        `;
+    });
+}
+
+function returnToRoom() {
+    // ВСТАВ СЮДИ ПОСИЛАННЯ НА СВОЮ КІМНАТУ:
+    window.location.href = "https://rooms.xyz/kontavri/n2";
+}
+
+showQuestion();
+
+</script>
+
+</body>
+</html>
+
