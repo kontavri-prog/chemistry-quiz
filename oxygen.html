@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Квест: Оксиген (O)</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #07152f, #102f59, #164b75);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    background: rgba(5, 15, 35, 0.88);
+    border: 1px solid rgba(120, 190, 255, 0.3);
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+}
+
+h1 {
+    text-align: center;
+    color: #75caff;
+    margin-top: 0;
+}
+
+.subtitle {
+    text-align: center;
+    color: #b9d9f5;
+    margin-bottom: 25px;
+}
+
+.progress {
+    text-align: center;
+    color: #8fcfff;
+    margin-bottom: 15px;
+}
+
+.question {
+    font-size: 21px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.answers {
+    display: grid;
+    gap: 12px;
+}
+
+.answer {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #3979a9;
+    border-radius: 12px;
+    background: #12365d;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.answer:hover:not(:disabled) {
+    background: #1c5486;
+    transform: translateY(-2px);
+}
+
+.answer:disabled {
+    cursor: default;
+}
+
+.correct {
+    background: #176b45 !important;
+    border-color: #35d68b;
+}
+
+.wrong {
+    background: #812f3b !important;
+    border-color: #ff7180;
+}
+
+.feedback {
+    min-height: 30px;
+    margin-top: 20px;
+    font-size: 17px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.next {
+    display: none;
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #168bd0;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.next:hover {
+    background: #27a8f2;
+}
+
+.result {
+    display: none;
+    text-align: center;
+}
+
+.score {
+    font-size: 34px;
+    color: #75caff;
+    margin: 20px 0;
+}
+
+.review {
+    text-align: left;
+    line-height: 1.7;
+    margin: 20px 0;
+}
+
+.room {
+    display: block;
+    text-align: center;
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 12px;
+    background: #168bd0;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.room:hover {
+    background: #27a8f2;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div id="quiz">
+        <h1>Квест: Оксиген (O)</h1>
+        <p class="subtitle">Перевір свої знання про Оксиген!</p>
+
+        <div class="progress" id="progress"></div>
+
+        <div class="question" id="question"></div>
+
+        <div class="answers" id="answers"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button class="next" id="next" onclick="nextQuestion()">
+            Наступне питання →
+        </button>
+    </div>
+
+    <div class="result" id="result">
+        <h1>Квест завершено!</h1>
+        <p>Твій результат:</p>
+
+        <div class="score" id="score"></div>
+
+        <div class="review" id="review"></div>
+
+        <a class="room" href="https://rooms.xyz/kontavri/o2">
+            ← Повернутися в кімнату
+        </a>
+    </div>
+
+</div>
+
+<script>
+const questions = [
+    {
+        question: "Цей елемент є необхідним для аеробного дихання та підтримує процеси горіння. Його атом має 8 електронів. Яка електронна формула відповідає цьому атому?",
+        answers: [
+            "1s² 2s² 2p²",
+            "1s² 2s² 2p⁴",
+            "1s² 2s² 2p⁶"
+        ],
+        correct: 1,
+        explanation: "Правильно! Оксиген має 8 електронів, які розподіляються так: 1s² 2s² 2p⁴."
+    },
+    {
+        question: "Скільки атомів Оксигену міститься в одній молекулі звичайного кисню O₂?",
+        answers: [
+            "1 атом",
+            "2 атоми",
+            "3 атоми"
+        ],
+        correct: 1,
+        explanation: "Молодець! Формула O₂ означає, що молекула складається з двох атомів Оксигену."
+    },
+    {
+        question: "Яка проста речовина Оксигену має три атоми в одній молекулі?",
+        answers: [
+            "Кисень O₂",
+            "Водень H₂",
+            "Озон O₃"
+        ],
+        correct: 2,
+        explanation: "Правильно! Озон O₃ складається з трьох атомів Оксигену."
+    }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let mistakes = [];
+
+function showQuestion() {
+    const q = questions[currentQuestion];
+
+    document.getElementById("progress").textContent =
+        `Питання ${currentQuestion + 1} із ${questions.length}`;
+
+    document.getElementById("question").textContent = q.question;
+
+    document.getElementById("feedback").textContent = "";
+    document.getElementById("next").style.display = "none";
+
+    const answersDiv = document.getElementById("answers");
+    answersDiv.innerHTML = "";
+
+    q.answers.forEach((answer, index) => {
+        const button = document.createElement("button");
+        button.className = "answer";
+        button.textContent = answer;
+
+        button.onclick = () => checkAnswer(index, button);
+
+        answersDiv.appendChild(button);
+    });
+}
+
+function checkAnswer(selected, selectedButton) {
+    const q = questions[currentQuestion];
+    const buttons = document.querySelectorAll(".answer");
+
+    buttons.forEach(button => button.disabled = true);
+
+    if (selected === q.correct) {
+        score++;
+        selectedButton.classList.add("correct");
+        document.getElementById("feedback").textContent =
+            "✓ " + q.explanation;
+        document.getElementById("feedback").style.color = "#55e6a0";
+    } else {
+        selectedButton.classList.add("wrong");
+        buttons[q.correct].classList.add("correct");
+
+        document.getElementById("feedback").textContent =
+            "✗ Неправильно! " + q.explanation;
+        document.getElementById("feedback").style.color = "#ff8792";
+
+        mistakes.push({
+            question: q.question,
+            chosen: q.answers[selected],
+            correct: q.answers[q.correct]
+        });
+    }
+
+    const nextButton = document.getElementById("next");
+    nextButton.textContent =
+        currentQuestion === questions.length - 1
+        ? "Показати результат"
+        : "Наступне питання →";
+
+    nextButton.style.display = "block";
+}
+
+function nextQuestion() {
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        showQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("score").textContent =
+        `${score} із ${questions.length}`;
+
+    const review = document.getElementById("review");
+
+    if (mistakes.length === 0) {
+        review.innerHTML = "<h3>Чудова робота! Усі відповіді правильні! 🎉</h3>";
+    } else {
+        review.innerHTML = "<h3>Питання, у яких були помилки:</h3>";
+
+        mistakes.forEach((mistake, index) => {
+            review.innerHTML += `
+                <p>
+                    <b>${index + 1}. ${mistake.question}</b><br>
+                    Твоя відповідь: ${mistake.chosen}<br>
+                    Правильна відповідь: <span style="color:#55e6a0">
+                    ${mistake.correct}</span>
+                </p>
+            `;
+        });
+    }
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
+
+
