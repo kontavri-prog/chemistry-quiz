@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вікторина — Бром Br</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: linear-gradient(135deg, #101827, #49251f);
+}
+
+.card {
+    width: 100%;
+    max-width: 650px;
+    padding: 35px;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 15px 45px rgba(0,0,0,0.35);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.subtitle {
+    text-align: center;
+    color: #e8b6a5;
+    margin-bottom: 28px;
+}
+
+.progress {
+    height: 8px;
+    background: #49352f;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 33.33%;
+    background: #e4774e;
+    transition: width .3s;
+}
+
+.question {
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.answers {
+    display: grid;
+    gap: 12px;
+}
+
+.answer {
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 12px;
+    background: rgba(255,255,255,.07);
+    color: white;
+    font-size: 17px;
+    text-align: left;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.answer:hover:not(:disabled) {
+    background: rgba(228,119,78,.2);
+    border-color: #e4774e;
+}
+
+.answer:disabled {
+    cursor: default;
+    opacity: .85;
+}
+
+.answer.correct {
+    background: rgba(46,160,90,.3);
+    border-color: #4ade80;
+}
+
+.answer.wrong {
+    background: rgba(220,60,60,.3);
+    border-color: #f87171;
+}
+
+.feedback {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    line-height: 1.5;
+    display: none;
+}
+
+.feedback.good {
+    display: block;
+    background: rgba(46,160,90,.2);
+}
+
+.feedback.bad {
+    display: block;
+    background: rgba(220,60,60,.2);
+}
+
+.main-btn {
+    width: 100%;
+    padding: 16px;
+    margin-top: 22px;
+    border: none;
+    border-radius: 12px;
+    background: #e4774e;
+    color: #28130c;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.main-btn:hover {
+    background: #f2936d;
+}
+
+.result {
+    text-align: center;
+}
+
+.result h2 {
+    font-size: 30px;
+}
+
+.review {
+    text-align: left;
+    line-height: 1.6;
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>🧪 Бром (Br)</h1>
+
+    <div class="subtitle">
+        Перевір свої знання про неметали
+    </div>
+
+    <div id="quiz">
+
+        <div class="progress">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+
+        <div id="counter" class="subtitle">
+            Питання 1 із 3
+        </div>
+
+        <div class="question" id="question"></div>
+
+        <div class="answers" id="answers"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button class="main-btn hidden" id="next" onclick="nextQuestion()">
+            Наступне питання
+        </button>
+
+    </div>
+
+    <div id="result" class="result hidden"></div>
+
+</div>
+
+<script>
+
+const questions = [
+
+    {
+        question: "Питання (STEM): Один із двох хімічних елементів, які за стандартних умов є рідинами, — Бром. Це важка червоно-бура рідина з різким запахом (Z = 35). Яка електронна конфігурація відповідає його нейтральному атому?",
+
+        answers: [
+            "[Ar] 3d¹⁰ 4s² 4p⁵",
+            "[Ar] 3d¹⁰ 4s² 4p⁴",
+            "[Ar] 3d¹⁰ 4s² 4p⁶",
+            "[Ar] 3d¹⁰ 4s² 4p³"
+        ],
+
+        correct: 0,
+
+        explanation: "Правильно! Бром має 35 електронів. Позначення [Ar] відповідає 18 електронам, а 3d¹⁰ + 4s² + 4p⁵ — ще 17. Разом отримуємо 35 електронів."
+    },
+
+    {
+        question: "Які фізичні властивості характерні для Брому за кімнатної температури?",
+
+        answers: [
+            "Безбарвний газ",
+            "Сріблясто-білий метал",
+            "Червоно-бура рідина з різким запахом",
+            "Жовті кристали"
+        ],
+
+        correct: 2,
+
+        explanation: "Молодець! За кімнатної температури Бром є важкою червоно-бурою рідиною, яка легко випаровується й утворює токсичні пари."
+    },
+
+    {
+        question: "Яка хімічна формула простої речовини брому?",
+
+        answers: [
+            "Br",
+            "Br₂",
+            "BrO₂",
+            "B₂"
+        ],
+
+        correct: 1,
+
+        explanation: "Правильно! Молекула простої речовини брому складається з двох атомів, тому її формула — Br₂."
+    }
+
+];
+
+let current = 0;
+let score = 0;
+let wrongAnswers = [];
+
+function showQuestion() {
+
+    const q = questions[current];
+
+    document.getElementById("counter").textContent =
+        `Питання ${current + 1} із 3`;
+
+    document.getElementById("progress").style.width =
+        `${((current + 1) / 3) * 100}%`;
+
+    document.getElementById("question").textContent = q.question;
+
+    const answers = document.getElementById("answers");
+    answers.innerHTML = "";
+
+    q.answers.forEach((answer, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "answer";
+        button.textContent = answer;
+
+        button.onclick = () => checkAnswer(index, button);
+
+        answers.appendChild(button);
+
+    });
+
+    document.getElementById("feedback").className = "feedback";
+    document.getElementById("feedback").textContent = "";
+
+    document.getElementById("next").classList.add("hidden");
+
+}
+
+function checkAnswer(index, button) {
+
+    const q = questions[current];
+
+    const buttons = document.querySelectorAll(".answer");
+
+    buttons.forEach(b => b.disabled = true);
+
+    const feedback = document.getElementById("feedback");
+
+    if (index === q.correct) {
+
+        score++;
+
+        button.classList.add("correct");
+
+        feedback.className = "feedback good";
+
+        feedback.textContent = "✅ Правильно! " + q.explanation;
+
+    } else {
+
+        button.classList.add("wrong");
+
+        buttons[q.correct].classList.add("correct");
+
+        feedback.className = "feedback bad";
+
+        feedback.textContent = "❌ Неправильно. " + q.explanation;
+
+        wrongAnswers.push({
+            question: q.question,
+            chosen: q.answers[index],
+            correct: q.answers[q.correct]
+        });
+
+    }
+
+    document.getElementById("next").classList.remove("hidden");
+
+    document.getElementById("next").textContent =
+        current === 2 ? "Показати результат" : "Наступне питання";
+
+}
+
+function nextQuestion() {
+
+    current++;
+
+    if (current < questions.length) {
+
+        showQuestion();
+
+    } else {
+
+        showResult();
+
+    }
+
+}
+
+function showResult() {
+
+    document.getElementById("quiz").classList.add("hidden");
+
+    const result = document.getElementById("result");
+
+    result.classList.remove("hidden");
+
+    let review = "";
+
+    if (wrongAnswers.length === 0) {
+
+        review = "<p>🏆 Ідеальний результат! Ти відповів правильно на всі питання!</p>";
+
+    } else {
+
+        review = "<div class='review'><h3>Питання, у яких були помилки:</h3>";
+
+        wrongAnswers.forEach((item, index) => {
+
+            review += `
+                <p>
+                <b>${index + 1}. ${item.question}</b><br>
+                Твоя відповідь: ${item.chosen}<br>
+                Правильна відповідь: <b>${item.correct}</b>
+                </p>
+            `;
+
+        });
+
+        review += "</div>";
+
+    }
+
+    result.innerHTML = `
+        <h2>🎉 Вікторину завершено!</h2>
+        <h1>${score} із 3</h1>
+        <p>Твій результат</p>
+        ${review}
+
+        <button class="main-btn"
+        onclick="location.href='https://rooms.xyz/kontavri/b2'">
+            Повернутися в кімнату
+        </button>
+    `;
+
+}
+
+showQuestion();
+
+</script>
+
+</body>
+</html>
