@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Квест: Фосфор (P)</title>
+<title>Експрес кейс — Фосфор (P)</title>
 
 <style>
 * { box-sizing: border-box; }
@@ -70,6 +70,7 @@ h1 {
     font-size: 17px;
     cursor: pointer;
     transition: 0.2s;
+    text-align: left;
 }
 
 .answer:hover:not(:disabled) {
@@ -93,7 +94,8 @@ h1 {
     min-height: 30px;
     margin-top: 20px;
     font-size: 17px;
-    text-align: center;
+    text-align: left;
+    line-height: 1.5;
     font-weight: bold;
 }
 
@@ -130,6 +132,13 @@ h1 {
     margin: 20px 0;
 }
 
+.review-item {
+    padding: 14px;
+    margin-bottom: 12px;
+    background: rgba(255,255,255,.07);
+    border-radius: 12px;
+}
+
 .room {
     display: block;
     text-align: center;
@@ -150,8 +159,8 @@ h1 {
 <div class="container">
 
     <div id="quiz">
-        <h1>Квест: Фосфор (P)</h1>
-        <p class="subtitle">Перевір свої знання про Фосфор!</p>
+        <h1>⚗️ Фосфор (P)</h1>
+        <p class="subtitle">ЕКСПРЕС КЕЙС</p>
 
         <div class="progress" id="progress"></div>
         <div class="question" id="question"></div>
@@ -164,7 +173,7 @@ h1 {
     </div>
 
     <div class="result" id="result">
-        <h1>Квест завершено!</h1>
+        <h1>🏆 Експрес кейс завершено!</h1>
         <p>Твій результат:</p>
 
         <div class="score" id="score"></div>
@@ -179,6 +188,8 @@ h1 {
 
 <script>
 const questions = [
+
+    // 1. ЕЛЕКТРОННА КОНФІГУРАЦІЯ — ОРИГІНАЛ
     {
         question: "«Енергетична валюта» клітини (АТФ) та ДНК обов'язково містять біогенний елемент із порядковим номером 15. Як його електрони розміщуються на енергетичних підрівнях?",
         answers: [
@@ -189,31 +200,129 @@ const questions = [
         correct: 1,
         explanation: "Правильно! Фосфор має 15 електронів: 2 + 2 + 6 + 2 + 3 = 15."
     },
+
+    // 2. СТУПІНЬ ОКИСНЕННЯ
     {
-        question: "Яку роль відіграє Фосфор у молекулах АТФ?",
+        question: "Який ступінь окиснення має Фосфор у сполуці PH₃ (фосфін)?",
         answers: [
-            "Бере участь у накопиченні та передачі енергії",
-            "Забезпечує перенесення кисню кров'ю",
-            "Утворює основу клітинної мембрани"
-        ],
-        correct: 0,
-        explanation: "Фосфатні групи АТФ беруть участь у перенесенні енергії в клітині."
-    },
-    {
-        question: "Чому білий фосфор зберігають під водою?",
-        answers: [
-            "Щоб він не розчинявся у воді.",
-            "Щоб він не контактував із киснем повітря та не займався самовільно.",
-            "Щоб він не змінював свій колір."
+            "+3",
+            "−3",
+            "+5",
+            "0"
         ],
         correct: 1,
-        explanation: "Білий фосфор дуже реакційноздатний і може самозайматися на повітрі. Тому його зберігають під водою, яка не дає йому контактувати з киснем."
+        explanation: "У PH₃ Гідроген має ступінь окиснення +1. Три атоми Гідрогену разом дають +3, тому Фосфор має −3."
+    },
+
+    // 3. СТУПІНЬ ОКИСНЕННЯ
+    {
+        question: "Який ступінь окиснення має Фосфор у фосфатній кислоті H₃PO₄?",
+        answers: [
+            "−3",
+            "+1",
+            "+3",
+            "+5"
+        ],
+        correct: 3,
+        explanation: "У H₃PO₄ три атоми Гідрогену мають сумарно +3, чотири атоми Оксигену — −8. Отже, Фосфор має +5."
+    },
+
+    // 4. ВАЛЕНТНІСТЬ
+    {
+        question: "Яку валентність має Фосфор у сполуці PH₃?",
+        answers: [
+            "I",
+            "II",
+            "III",
+            "V"
+        ],
+        correct: 2,
+        explanation: "У PH₃ атом Фосфору утворює три хімічні зв'язки з атомами Гідрогену, тому його валентність — III."
+    },
+
+    // 5. ФІЗИЧНІ ВЛАСТИВОСТІ
+    {
+        question: "Які фізичні властивості характерні для білого фосфору?",
+        answers: [
+            "Біла або жовтувата м'яка воскова речовина",
+            "Чорний твердий метал",
+            "Безбарвний газ",
+            "Червона прозора рідина"
+        ],
+        correct: 0,
+        explanation: "Білий фосфор — м'яка воскова речовина білого або жовтуватого кольору. Він дуже отруйний і може самозайматися на повітрі."
+    },
+
+    // 6. ФІЗИЧНІ ВЛАСТИВОСТІ
+    {
+        question: "Яка властивість характерна для червоного фосфору порівняно з білим?",
+        answers: [
+            "Він набагато токсичніший і самозаймається на повітрі",
+            "Він менш реакційноздатний і не самозаймається за звичайних умов",
+            "Він є безбарвним газом",
+            "Він легко розчиняється у воді"
+        ],
+        correct: 1,
+        explanation: "Червоний фосфор менш реакційноздатний і значно безпечніший за білий. За звичайних умов він не самозаймається на повітрі."
+    },
+
+    // 7. ХІМІЧНІ ВЛАСТИВОСТІ
+    {
+        question: "Яка речовина утворюється під час горіння Фосфору в надлишку кисню?",
+        answers: [
+            "Фосфін PH₃",
+            "Фосфор(V) оксид P₄O₁₀",
+            "Фосфатна кислота H₃PO₄",
+            "Вода H₂O"
+        ],
+        correct: 1,
+        explanation: "Під час горіння Фосфору в надлишку кисню утворюється фосфор(V) оксид: P₄ + 5O₂ → P₄O₁₀."
+    },
+
+    // 8. ХІМІЧНІ ВЛАСТИВОСТІ
+    {
+        question: "Яка речовина утворюється під час реакції Фосфору з хлором за надлишку хлору?",
+        answers: [
+            "Фосфор трихлорид PCl₃",
+            "Фосфор пентахлорид PCl₅",
+            "Хлороводень HCl",
+            "Фосфатна кислота H₃PO₄"
+        ],
+        correct: 1,
+        explanation: "За надлишку хлору Фосфор утворює фосфор пентахлорид: 2P + 5Cl₂ → 2PCl₅."
+    },
+
+    // 9. АЛОТРОПІЯ
+    {
+        question: "Які основні алотропні модифікації Фосфору вивчають у шкільному курсі хімії?",
+        answers: [
+            "Алмаз і графіт",
+            "Білий, червоний і чорний фосфор",
+            "Ромбічна та моноклінна сірка",
+            "Озон і кисень"
+        ],
+        correct: 1,
+        explanation: "Основні алотропні модифікації Фосфору — білий, червоний і чорний фосфор. Вони відрізняються будовою та властивостями."
+    },
+
+    // 10. ЗАСТОСУВАННЯ
+    {
+        question: "Де широко використовують сполуки Фосфору?",
+        answers: [
+            "Для виробництва мінеральних добрив",
+            "Для виготовлення кухонного цукру",
+            "Для виробництва кисню",
+            "Для очищення питної води від солей"
+        ],
+        correct: 0,
+        explanation: "Фосфатні сполуки широко використовують у виробництві мінеральних добрив, необхідних для росту рослин."
     }
+
 ];
 
 let currentQuestion = 0;
 let score = 0;
-let mistakes = [];
+let userAnswers = [];
 
 function showQuestion() {
     const q = questions[currentQuestion];
@@ -224,6 +333,7 @@ function showQuestion() {
     document.getElementById("question").textContent = q.question;
     document.getElementById("feedback").textContent = "";
     document.getElementById("next").style.display = "none";
+    document.getElementById("next").textContent = "Наступне питання →";
 
     const answersDiv = document.getElementById("answers");
     answersDiv.innerHTML = "";
@@ -231,7 +341,7 @@ function showQuestion() {
     q.answers.forEach((answer, index) => {
         const button = document.createElement("button");
         button.className = "answer";
-        button.textContent = answer;
+        button.textContent = String.fromCharCode(65 + index) + ". " + answer;
         button.onclick = () => checkAnswer(index, button);
         answersDiv.appendChild(button);
     });
@@ -242,6 +352,7 @@ function checkAnswer(selected, selectedButton) {
     const buttons = document.querySelectorAll(".answer");
 
     buttons.forEach(button => button.disabled = true);
+    userAnswers[currentQuestion] = selected;
 
     if (selected === q.correct) {
         score++;
@@ -256,15 +367,11 @@ function checkAnswer(selected, selectedButton) {
         buttons[q.correct].classList.add("correct");
 
         document.getElementById("feedback").textContent =
-            "✗ Неправильно! " + q.explanation;
+            "✗ Неправильно! " +
+            "Правильна відповідь: " + q.answers[q.correct] +
+            ". " + q.explanation;
 
         document.getElementById("feedback").style.color = "#ff8792";
-
-        mistakes.push({
-            question: q.question,
-            chosen: q.answers[selected],
-            correct: q.answers[q.correct]
-        });
     }
 
     const nextButton = document.getElementById("next");
@@ -296,20 +403,37 @@ function showResult() {
 
     const review = document.getElementById("review");
 
-    if (mistakes.length === 0) {
-        review.innerHTML =
-            "<h3>Чудова робота! Усі відповіді правильні! 🎉</h3>";
-    } else {
-        review.innerHTML = "<h3>Питання, у яких були помилки:</h3>";
+    let message = "";
 
-        mistakes.forEach((mistake, index) => {
+    if (score === 10) {
+        message = "🔥 Ідеально! Ти чудово знаєш Фосфор!";
+    } else if (score >= 8) {
+        message = "👏 Відмінний результат! Ти добре знаєш матеріал!";
+    } else if (score >= 6) {
+        message = "💪 Гарний результат! Ще трохи — і буде ідеально!";
+    } else if (score >= 4) {
+        message = "📚 Непогано! Варто ще повторити матеріал.";
+    } else {
+        message = "Не засмучуйся! Повтори матеріал і спробуй ще раз.";
+    }
+
+    if (userAnswers.every((answer, index) => answer === questions[index].correct)) {
+        review.innerHTML = "<h3>Чудова робота! Усі відповіді правильні! 🎉</h3>";
+    } else {
+        review.innerHTML = `<h3>${message}</h3><h3>Розбір відповідей:</h3>`;
+
+        questions.forEach((q, index) => {
+            const correct = userAnswers[index] === q.correct;
+
             review.innerHTML += `
-                <p>
-                    <b>${index + 1}. ${mistake.question}</b><br>
-                    Твоя відповідь: ${mistake.chosen}<br>
-                    Правильна відповідь:
-                    <span style="color:#55e6a0">${mistake.correct}</span>
-                </p>
+                <div class="review-item">
+                    <b>${index + 1}. ${q.question}</b><br>
+                    Твоя відповідь: ${q.answers[userAnswers[index]]}<br>
+                    ${correct
+                        ? '<span style="color:#55e6a0">✓ Правильно!</span>'
+                        : '<span style="color:#ff8792">✗ Правильна відповідь: ' + q.answers[q.correct] + '</span>'}
+                    <br>${q.explanation}
+                </div>
             `;
         });
     }
