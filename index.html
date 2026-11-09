@@ -4,12 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Вікторина з хімії</title>
+<title>Експрес кейс — Гідроген</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -127,14 +125,8 @@ button:disabled {
   line-height: 1.5;
 }
 
-.good {
-  color: #62e69a;
-}
-
-.bad {
-  color: #ff8585;
-}
-
+.good { color: #62e69a; }
+.bad { color: #ff8585; }
 </style>
 </head>
 
@@ -142,40 +134,32 @@ button:disabled {
 
 <div class="quiz">
 
-  <div class="tag">🧪 ХІМІЧНА ВІКТОРИНА</div>
+  <div class="tag">🧪 ЕКСПРЕС КЕЙС</div>
 
   <div id="quizScreen">
-
-    <h1>Перевір свої знання!</h1>
+    <h1>Гідроген H</h1>
 
     <div class="progress" id="progress">
-      Питання 1 із 3
+      Питання 1 із 10
     </div>
 
     <div class="question" id="question"></div>
-
     <div class="answers" id="answers"></div>
-
     <div id="feedback"></div>
 
     <button id="next" onclick="nextQuestion()">
       Наступне питання →
     </button>
-
   </div>
 
   <div id="resultScreen">
-
-    <h1>Результати вікторини!</h1>
-
+    <h1>Результати експрес кейсу!</h1>
     <div class="score" id="score"></div>
-
     <div id="review"></div>
 
     <button id="return" onclick="returnToRoom()">
       ← Повернутися до кімнати
     </button>
-
   </div>
 
 </div>
@@ -194,17 +178,96 @@ const questions = [
   },
 
   {
-    question: "Який порядковий номер Гідрогену в періодичній системі?",
-    options: ["2", "1", "3", "4"],
-    correct: 1,
-    explanation: "Порядковий номер Гідрогену — 1. У його ядрі міститься один протон."
+    question: "Який ступінь окиснення найчастіше має Гідроген у сполуках з неметалами, наприклад у воді H₂O?",
+    options: ["−1", "0", "+1", "+2"],
+    correct: 2,
+    explanation: "У більшості сполук із неметалами Гідроген має ступінь окиснення +1."
   },
 
   {
-    question: "Яка проста речовина утворюється з атомів Гідрогену за звичайних умов?",
-    options: ["H₂", "O₂", "N₂", "Cl₂"],
+    question: "Який ступінь окиснення має Гідроген у сполуці NaH (натрій гідрид)?",
+    options: ["+1", "−1", "0", "+2"],
+    correct: 1,
+    explanation: "У сполуках із металами Гідроген може мати ступінь окиснення −1. NaH — приклад такої сполуки."
+  },
+
+  {
+    question: "Яка валентність Гідрогену в більшості його сполук?",
+    options: ["I", "II", "III", "IV"],
     correct: 0,
-    explanation: "Проста речовина Гідроген — це молекулярний водень H₂, який складається з двох атомів Гідрогену."
+    explanation: "Гідроген одновалентний: його атом утворює один хімічний зв'язок."
+  },
+
+  {
+    question: "Якими є фізичні властивості водню за звичайних умов?",
+    options: [
+      "Безбарвний газ без запаху",
+      "Жовта рідина із запахом",
+      "Тверда речовина сріблястого кольору",
+      "Зелений газ із різким запахом"
+    ],
+    correct: 0,
+    explanation: "Водень H₂ за звичайних умов — безбарвний газ без запаху."
+  },
+
+  {
+    question: "Яка фізична властивість найкраще відрізняє водень від більшості інших газів?",
+    options: [
+      "Він має найбільшу густину",
+      "Він є найменш густим газом",
+      "Він має синій колір",
+      "Він легко перетворюється на тверду речовину"
+    ],
+    correct: 1,
+    explanation: "Водень — найлегший газ. Його густина значно менша за густину повітря."
+  },
+
+  {
+    question: "Що утворюється під час реакції водню з киснем?",
+    options: [
+      "Вуглекислий газ",
+      "Амоніак",
+      "Вода",
+      "Хлороводень"
+    ],
+    correct: 2,
+    explanation: "Під час реакції водню з киснем утворюється вода: 2H₂ + O₂ → 2H₂O."
+  },
+
+  {
+    question: "За яких умов водень реагує з хлором з утворенням хлороводню?",
+    options: [
+      "Під дією світла",
+      "Лише за температури −200 °C",
+      "Під час розчинення у воді",
+      "Без будь-яких умов і миттєво"
+    ],
+    correct: 0,
+    explanation: "Водень реагує з хлором під дією світла: H₂ + Cl₂ → 2HCl."
+  },
+
+  {
+    question: "Чи має проста речовина водень алотропні модифікації?",
+    options: [
+      "Так, графіт і алмаз",
+      "Так, білий і червоний фосфор",
+      "Ні, не має",
+      "Так, ромбічну та моноклінну"
+    ],
+    correct: 2,
+    explanation: "Водень не має алотропних модифікацій. Його проста речовина за звичайних умов існує у вигляді молекул H₂."
+  },
+
+  {
+    question: "Де широко використовують водень у хімічній промисловості?",
+    options: [
+      "Для виробництва амоніаку",
+      "Для виготовлення кухонної солі",
+      "Для виробництва кисню",
+      "Для отримання вуглекислого газу"
+    ],
+    correct: 0,
+    explanation: "Водень використовують для виробництва амоніаку (NH₃), який є важливою сировиною для виготовлення добрив."
   }
 
 ];
@@ -225,10 +288,9 @@ function showQuestion() {
     `Питання ${currentQuestion + 1} із ${questions.length}`;
 
   document.getElementById("question").textContent = q.question;
-
   document.getElementById("feedback").textContent = "";
-
   document.getElementById("next").style.display = "none";
+  document.getElementById("next").textContent = "Наступне питання →";
 
   const answers = document.getElementById("answers");
   answers.innerHTML = "";
@@ -253,18 +315,16 @@ function showQuestion() {
 function selectAnswer(index) {
 
   const q = questions[currentQuestion];
-
   const buttons = document.querySelectorAll("#answers button");
 
   buttons.forEach(button => button.disabled = true);
 
   const isCorrect = index === q.correct;
-
   userAnswers.push(index);
 
   if (isCorrect) {
-    score++;
 
+    score++;
     buttons[index].classList.add("correct");
 
     document.getElementById("feedback").innerHTML =
@@ -273,7 +333,6 @@ function selectAnswer(index) {
   } else {
 
     buttons[index].classList.add("wrong");
-
     buttons[q.correct].classList.add("correct");
 
     document.getElementById("feedback").innerHTML =
@@ -297,13 +356,9 @@ function nextQuestion() {
   currentQuestion++;
 
   if (currentQuestion < questions.length) {
-
     showQuestion();
-
   } else {
-
     showResults();
-
   }
 
 }
@@ -313,20 +368,17 @@ function nextQuestion() {
 function showResults() {
 
   document.getElementById("quizScreen").style.display = "none";
-
   document.getElementById("resultScreen").style.display = "block";
 
   document.getElementById("score").textContent =
     `${score} із ${questions.length} правильних`;
 
   const review = document.getElementById("review");
-
   review.innerHTML = "";
 
   questions.forEach((q, index) => {
 
     const correct = userAnswers[index] === q.correct;
-
     const item = document.createElement("div");
 
     item.className = "review";
@@ -352,10 +404,7 @@ function showResults() {
 // ПОВЕРНЕННЯ ДО КІМНАТИ
 
 function returnToRoom() {
-
-  // ВСТАВ СЮДИ ПОСИЛАННЯ НА СВОЮ КІМНАТУ:
   window.location.href = "https://rooms.xyz/kontavri/h2";
-
 }
 
 // ЗАПУСК
