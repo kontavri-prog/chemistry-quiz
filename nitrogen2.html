@@ -4,12 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Нітроген N — Вікторина</title>
+<title>Експрес кейс — Нітроген</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -38,10 +36,31 @@ h1 {
     margin-top: 0;
 }
 
+.subtitle {
+    text-align: center;
+    color: #a9c9ed;
+    margin-bottom: 25px;
+}
+
 .progress {
     text-align: center;
     color: #a9c9ed;
     margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #28558a;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #65b5ff;
+    transition: width 0.3s;
 }
 
 .question {
@@ -111,7 +130,7 @@ h1 {
     cursor: pointer;
 }
 
-.next:hover {
+.next:hover, .room:hover {
     background: #286dcc;
 }
 
@@ -136,6 +155,13 @@ h1 {
     border-radius: 12px;
 }
 
+.review-item {
+    padding: 12px;
+    margin-bottom: 12px;
+    background: #18395f;
+    border-radius: 10px;
+}
+
 .room {
     display: block;
     margin-top: 25px;
@@ -146,10 +172,6 @@ h1 {
     text-decoration: none;
     font-weight: bold;
 }
-
-.room:hover {
-    background: #286dcc;
-}
 </style>
 </head>
 
@@ -159,13 +181,15 @@ h1 {
 
     <div id="quiz">
         <h1>Нітроген (N)</h1>
+        <div class="subtitle">🧪 ЕКСПРЕС КЕЙС</div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
 
         <div class="progress" id="progress"></div>
-
         <div class="question" id="question"></div>
-
         <div class="answers" id="answers"></div>
-
         <div class="feedback" id="feedback"></div>
 
         <button class="next" id="next" onclick="nextQuestion()">
@@ -174,12 +198,9 @@ h1 {
     </div>
 
     <div class="result" id="result">
-        <h1>Вікторину завершено!</h1>
-
+        <h1>Експрес кейс завершено!</h1>
         <div class="score" id="score"></div>
-
         <p id="resultText"></p>
-
         <div class="review" id="review"></div>
 
         <a class="room" href="https://rooms.xyz/kontavri/n2">
@@ -203,38 +224,118 @@ const questions = [
         explanation: "Молодець! Нітроген має 7 електронів: 2 на першому рівні та 5 на другому. Конфігурація — 1s² 2s² 2p³."
     },
     {
-        question: "Чому азот у звичайних умовах майже не вступає в хімічні реакції з іншими речовинами?",
+        question: "Який ступінь окиснення Нітроген має в амоніаку NH₃?",
         answers: [
-            "Має дуже малу густину.",
-            "Молекула азоту має міцний потрійний зв'язок між атомами.",
-            "Не має електронів.",
-            "Добре розчиняється у воді."
+            "+3",
+            "−3",
+            "+5",
+            "0"
         ],
         correct: 1,
-        explanation: "Чудово! Два атоми Нітрогену в молекулі азоту з'єднані дуже міцним потрійним зв'язком. Щоб розірвати його, потрібна значна кількість енергії, тому азот малоактивний за звичайних умов."
+        explanation: "У NH₃ Гідроген має ступінь окиснення +1. Три атоми Гідрогену дають +3, тому Нітроген має −3."
     },
     {
-        question: "У яких формах рослини переважно засвоюють Нітроген із ґрунту?",
+        question: "Який ступінь окиснення Нітроген має в нітратній кислоті HNO₃?",
         answers: [
-            "У вигляді кисню та водню",
-            "У вигляді азоту N₂ з повітря",
-            "У вигляді нітрат-іонів NO₃⁻ та амоній-іонів NH₄⁺",
-            "У вигляді вуглекислого газу CO₂"
+            "−3",
+            "+3",
+            "+5",
+            "−1"
         ],
         correct: 2,
-        explanation: "Чудово! Рослини переважно поглинають Нітроген коренями у формі нітрат-іонів NO₃⁻ та амоній-іонів NH₄⁺."
+        explanation: "У HNO₃ Гідроген має +1, а Оксиген −2. Тому Нітроген має ступінь окиснення +5."
+    },
+    {
+        question: "Яку валентність найчастіше проявляє Нітроген у амоніаку NH₃?",
+        answers: [
+            "I",
+            "II",
+            "III",
+            "IV"
+        ],
+        correct: 2,
+        explanation: "В амоніаку атом Нітрогену утворює три хімічні зв'язки з атомами Гідрогену, тому його валентність дорівнює III."
+    },
+    {
+        question: "Які фізичні властивості має азот за звичайних умов?",
+        answers: [
+            "Безбарвний газ без запаху",
+            "Жовта тверда речовина",
+            "Синя рідина",
+            "Червоний газ із різким запахом"
+        ],
+        correct: 0,
+        explanation: "Азот N₂ — безбарвний газ без запаху, який становить приблизно 78% об'єму сухого повітря."
+    },
+    {
+        question: "Яка властивість рідкого азоту робить його корисним для охолодження?",
+        answers: [
+            "Він має дуже високу температуру кипіння",
+            "Він має дуже низьку температуру кипіння — близько −196 °C",
+            "Він швидко перетворюється на метал",
+            "Він добре горить"
+        ],
+        correct: 1,
+        explanation: "Рідкий азот кипить приблизно за −196 °C, тому його використовують для сильного охолодження та заморожування."
+    },
+    {
+        question: "Що утворюється під час реакції азоту з воднем за відповідних умов?",
+        answers: [
+            "Вода H₂O",
+            "Амоніак NH₃",
+            "Вуглекислий газ CO₂",
+            "Сірководень H₂S"
+        ],
+        correct: 1,
+        explanation: "Азот реагує з воднем з утворенням амоніаку: N₂ + 3H₂ ⇄ 2NH₃. Реакція відбувається за високої температури, тиску та за наявності каталізатора."
+    },
+    {
+        question: "Який газ може утворюватися під час реакції Нітрогену з киснем за дуже високої температури?",
+        answers: [
+            "NO — нітроген(II) оксид",
+            "CO₂ — вуглекислий газ",
+            "NH₃ — амоніак",
+            "H₂ — водень"
+        ],
+        correct: 0,
+        explanation: "За дуже високої температури азот реагує з киснем з утворенням NO: N₂ + O₂ → 2NO. Такий процес може відбуватися, наприклад, під час грози."
+    },
+    {
+        question: "Які дві основні форми має проста речовина Нітроген у звичайних умовах і за особливих умов?",
+        answers: [
+            "Алмаз і графіт",
+            "Ромбічна та моноклінна",
+            "Молекулярний азот N₂ та полімерний азот",
+            "Білий і червоний фосфор"
+        ],
+        correct: 2,
+        explanation: "Найпоширеніша форма простої речовини Нітрогену — молекулярний азот N₂. За надзвичайно високого тиску можуть утворюватися полімерні форми азоту."
+    },
+    {
+        question: "Де широко використовують азот завдяки його низькій хімічній активності?",
+        answers: [
+            "Для наповнення упаковок продуктів, щоб уповільнити їх псування",
+            "Для підтримки горіння в печах",
+            "Для виробництва кисню",
+            "Як основне паливо для автомобілів"
+        ],
+        correct: 0,
+        explanation: "Азот використовують у харчовій промисловості для створення захисного середовища в упаковках. Він витісняє кисень і допомагає довше зберігати продукти."
     }
 ];
 
 let current = 0;
 let score = 0;
-let mistakes = [];
+let userAnswers = [];
 
 function showQuestion() {
     const q = questions[current];
 
     document.getElementById("progress").textContent =
         "Питання " + (current + 1) + " із " + questions.length;
+
+    document.getElementById("progressFill").style.width =
+        (current / questions.length * 100) + "%";
 
     document.getElementById("question").textContent = q.question;
 
@@ -244,7 +345,7 @@ function showQuestion() {
     q.answers.forEach((answer, index) => {
         const button = document.createElement("button");
         button.className = "answer";
-        button.textContent = answer;
+        button.textContent = String.fromCharCode(65 + index) + ") " + answer;
         button.onclick = () => selectAnswer(index);
         answers.appendChild(button);
     });
@@ -257,46 +358,41 @@ function selectAnswer(index) {
     const q = questions[current];
     const buttons = document.querySelectorAll(".answer");
 
-    buttons.forEach((button, i) => {
-        button.disabled = true;
+    buttons.forEach(button => button.disabled = true);
 
-        if (i === q.correct) {
-            button.classList.add("correct");
-        }
-
-        if (i === index && index !== q.correct) {
-            button.classList.add("wrong");
-        }
-    });
+    userAnswers[current] = index;
 
     const feedback = document.getElementById("feedback");
-    feedback.style.display = "block";
 
     if (index === q.correct) {
         score++;
-        feedback.textContent = "✓ Правильно! " + q.explanation;
+        buttons[index].classList.add("correct");
+        feedback.innerHTML = "✅ <b>Правильно!</b><br>" + q.explanation;
     } else {
-        feedback.textContent = "✗ Не зовсім правильно. " + q.explanation;
+        buttons[index].classList.add("wrong");
+        buttons[q.correct].classList.add("correct");
 
-        mistakes.push({
-            question: q.question,
-            answer: q.answers[index],
-            correct: q.answers[q.correct]
-        });
+        feedback.innerHTML =
+            "❌ <b>Неправильно!</b><br>" +
+            "Правильна відповідь: " + q.answers[q.correct] +
+            "<br>" + q.explanation;
     }
 
-    document.getElementById("next").style.display = "block";
+    feedback.style.display = "block";
 
-    if (current === questions.length - 1) {
-        document.getElementById("next").textContent = "Показати результат";
-    }
+    const next = document.getElementById("next");
+    next.style.display = "block";
+
+    next.textContent =
+        current === questions.length - 1
+        ? "Показати результат"
+        : "Наступне питання →";
 }
 
 function nextQuestion() {
     current++;
 
     if (current < questions.length) {
-        document.getElementById("next").textContent = "Наступне питання →";
         showQuestion();
     } else {
         showResult();
@@ -311,29 +407,36 @@ function showResult() {
         score + " із " + questions.length;
 
     document.getElementById("resultText").textContent =
-        score === 3
-        ? "Відмінно! Ти чудово знаєш Нітроген!"
-        : score === 2
-        ? "Молодець! Але є ще що повторити."
+        score === questions.length
+        ? "Ідеальний результат! Ти чудово знаєш Нітроген! 🏆"
+        : score >= 8
+        ? "Чудова робота! 🔥"
+        : score >= 6
+        ? "Молодець! 👍"
+        : score >= 4
+        ? "Непогано! Повтори матеріал."
         : "Не засмучуйся! Повтори матеріал і спробуй ще раз.";
 
     const review = document.getElementById("review");
+    review.innerHTML = "<h3>Розбір відповідей:</h3>";
 
-    if (mistakes.length === 0) {
-        review.textContent = "Усі відповіді правильні! Помилок немає.";
-    } else {
-        review.innerHTML = "<strong>Твої помилки:</strong>";
+    questions.forEach((q, index) => {
+        const chosen = userAnswers[index];
 
-        mistakes.forEach((mistake, index) => {
-            const item = document.createElement("p");
-            item.textContent =
-                (index + 1) + ". " + mistake.question +
-                " Твоя відповідь: " + mistake.answer +
-                ". Правильна відповідь: " + mistake.correct + ".";
+        const item = document.createElement("div");
+        item.className = "review-item";
 
-            review.appendChild(item);
-        });
-    }
+        item.innerHTML = `
+            <b>${index + 1}. ${q.question}</b><br>
+            Твоя відповідь: ${q.answers[chosen]}<br>
+            ${chosen === q.correct
+                ? "✅ Правильно!"
+                : "❌ Правильна відповідь: " + q.answers[q.correct]}
+            <br><small>${q.explanation}</small>
+        `;
+
+        review.appendChild(item);
+    });
 }
 
 showQuestion();
