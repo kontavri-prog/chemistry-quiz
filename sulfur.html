@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Квест: Сульфур (S)</title>
+<title>Експрес кейс — Сульфур (S)</title>
 
 <style>
 * { box-sizing: border-box; }
@@ -49,6 +49,21 @@ h1 {
     margin-bottom: 15px;
 }
 
+.progress-bar {
+    height: 7px;
+    background: #173b60;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 10%;
+    background: #75caff;
+    transition: width .3s;
+}
+
 .question {
     font-size: 21px;
     line-height: 1.5;
@@ -70,6 +85,7 @@ h1 {
     font-size: 17px;
     cursor: pointer;
     transition: 0.2s;
+    text-align: left;
 }
 
 .answer:hover:not(:disabled) {
@@ -92,7 +108,8 @@ h1 {
 .feedback {
     min-height: 30px;
     margin-top: 20px;
-    font-size: 17px;
+    font-size: 16px;
+    line-height: 1.5;
     text-align: center;
     font-weight: bold;
 }
@@ -122,6 +139,7 @@ h1 {
     font-size: 34px;
     color: #75caff;
     margin: 20px 0;
+    font-weight: bold;
 }
 
 .review {
@@ -129,6 +147,16 @@ h1 {
     line-height: 1.7;
     margin: 20px 0;
 }
+
+.review-item {
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.07);
+}
+
+.good-text { color: #55e6a0; }
+.bad-text { color: #ff8792; }
 
 .room {
     display: block;
@@ -150,10 +178,17 @@ h1 {
 <div class="container">
 
     <div id="quiz">
-        <h1>Квест: Сульфур (S)</h1>
-        <p class="subtitle">Перевір свої знання про Сульфур!</p>
+        <h1>🧪 Експрес кейс: Сульфур (S)</h1>
+        <p class="subtitle">Перевір свої знання про неметали!</p>
 
-        <div class="progress" id="progress"></div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="progress" id="progress">
+            Питання 1 із 10
+        </div>
+
         <div class="question" id="question"></div>
         <div class="answers" id="answers"></div>
         <div class="feedback" id="feedback"></div>
@@ -164,10 +199,11 @@ h1 {
     </div>
 
     <div class="result" id="result">
-        <h1>Квест завершено!</h1>
+        <h1>🎉 Експрес кейс завершено!</h1>
         <p>Твій результат:</p>
 
         <div class="score" id="score"></div>
+        <div id="resultMessage"></div>
         <div class="review" id="review"></div>
 
         <a class="room" href="https://rooms.xyz/kontavri/s2">
@@ -179,6 +215,8 @@ h1 {
 
 <script>
 const questions = [
+
+    // 1. ЕЛЕКТРОННА КОНФІГУРАЦІЯ — ОРИГІНАЛ
     {
         question: "Жовта кристалічна речовина, відома ще з давнини, є ключовим компонентом для вулканізації каучуку. Її хімічний елемент має порядковий номер 16. Знайдіть електронну формулу атома Сульфуру.",
         answers: [
@@ -189,31 +227,129 @@ const questions = [
         correct: 1,
         explanation: "Правильно! Сульфур має 16 електронів: 2 + 2 + 6 + 2 + 4 = 16."
     },
+
+    // 2. СТУПІНЬ ОКИСНЕННЯ
     {
-        question: "До якої групи періодичної системи належить Сульфур?",
+        question: "Який ступінь окиснення має Сульфур у сірководні H₂S?",
         answers: [
-            "14-та група",
-            "15-та група",
-            "16-та група"
+            "+2",
+            "+4",
+            "−2",
+            "+6"
         ],
         correct: 2,
-        explanation: "Сульфур належить до 16-ї групи — халькогенів."
+        explanation: "У H₂S Гідроген має ступінь окиснення +1. Два атоми Гідрогену дають +2, тому Сульфур має −2."
     },
+
+    // 3. СТУПІНЬ ОКИСНЕННЯ
+    {
+        question: "Який ступінь окиснення має Сульфур у сульфатній кислоті H₂SO₄?",
+        answers: [
+            "−2",
+            "+2",
+            "+4",
+            "+6"
+        ],
+        correct: 3,
+        explanation: "У H₂SO₄ Гідроген має +1, а Оксиген −2. Розрахунок: 2 · (+1) + x + 4 · (−2) = 0. Отже, x = +6."
+    },
+
+    // 4. ВАЛЕНТНІСТЬ
+    {
+        question: "Яку валентність має Сульфур у сполуці H₂S?",
+        answers: [
+            "I",
+            "II",
+            "IV",
+            "VI"
+        ],
+        correct: 1,
+        explanation: "У H₂S атом Сульфуру утворює два хімічні зв'язки з атомами Гідрогену. Тому його валентність — II."
+    },
+
+    // 5. ФІЗИЧНІ ВЛАСТИВОСТІ
+    {
+        question: "Який вигляд має проста речовина сірка за звичайних умов?",
+        answers: [
+            "Жовта тверда кристалічна речовина",
+            "Безбарвний газ",
+            "Срібляста рідина",
+            "Червона прозора речовина"
+        ],
+        correct: 0,
+        explanation: "Сірка за звичайних умов — жовта тверда кристалічна речовина."
+    },
+
+    // 6. ФІЗИЧНІ ВЛАСТИВОСТІ
+    {
+        question: "Яка властивість характерна для сірки?",
+        answers: [
+            "Добре розчиняється у воді",
+            "Не розчиняється у воді",
+            "За кімнатної температури є газом",
+            "Має високу електропровідність"
+        ],
+        correct: 1,
+        explanation: "Сірка практично не розчиняється у воді. Вона є твердою речовиною та погано проводить електричний струм."
+    },
+
+    // 7. ХІМІЧНІ ВЛАСТИВОСТІ
+    {
+        question: "Який продукт утворюється під час горіння Сульфуру в кисні?",
+        answers: [
+            "Сірководень H₂S",
+            "Сульфур(VI) оксид SO₃",
+            "Сульфур(IV) оксид SO₂",
+            "Сульфатна кислота H₂SO₄"
+        ],
+        correct: 2,
+        explanation: "Під час горіння сірки в кисні утворюється сульфур(IV) оксид: S + O₂ → SO₂."
+    },
+
+    // 8. ХІМІЧНІ ВЛАСТИВОСТІ
+    {
+        question: "Яка речовина утворюється під час взаємодії Сульфуру з воднем?",
+        answers: [
+            "Сульфур(IV) оксид SO₂",
+            "Сірководень H₂S",
+            "Сульфатна кислота H₂SO₄",
+            "Вода H₂O"
+        ],
+        correct: 1,
+        explanation: "Під час реакції Сульфуру з воднем утворюється сірководень: H₂ + S → H₂S."
+    },
+
+    // 9. АЛОТРОПІЯ
+    {
+        question: "Які дві найвідоміші кристалічні алотропні модифікації має Сульфур?",
+        answers: [
+            "Алмаз і графіт",
+            "Білий і червоний",
+            "Ромбічна і моноклінна",
+            "Сірий і чорний"
+        ],
+        correct: 2,
+        explanation: "Сульфур має ромбічну та моноклінну алотропні модифікації. Обидві складаються переважно з молекул S₈, але відрізняються кристалічною будовою."
+    },
+
+    // 10. ЗАСТОСУВАННЯ
     {
         question: "Для чого використовують Сульфур під час вулканізації гуми?",
         answers: [
-            "Щоб зробити гуму міцнішою та еластичнішою.",
-            "Щоб надати гумі електропровідності.",
-            "Щоб зробити гуму розчинною у воді."
+            "Щоб зробити гуму міцнішою та еластичнішою",
+            "Щоб надати гумі електропровідності",
+            "Щоб зробити гуму розчинною у воді",
+            "Щоб перетворити гуму на метал"
         ],
         correct: 0,
         explanation: "Під час вулканізації Сульфур утворює зв'язки між молекулами каучуку. Завдяки цьому гума стає міцнішою, пружнішою та стійкішою до зношування."
     }
+
 ];
 
 let currentQuestion = 0;
 let score = 0;
-let mistakes = [];
+let userAnswers = [];
 
 function showQuestion() {
     const q = questions[currentQuestion];
@@ -221,8 +357,12 @@ function showQuestion() {
     document.getElementById("progress").textContent =
         `Питання ${currentQuestion + 1} із ${questions.length}`;
 
+    document.getElementById("progressFill").style.width =
+        `${((currentQuestion + 1) / questions.length) * 100}%`;
+
     document.getElementById("question").textContent = q.question;
     document.getElementById("feedback").textContent = "";
+    document.getElementById("feedback").style.color = "white";
     document.getElementById("next").style.display = "none";
 
     const answersDiv = document.getElementById("answers");
@@ -243,28 +383,25 @@ function checkAnswer(selected, selectedButton) {
 
     buttons.forEach(button => button.disabled = true);
 
+    userAnswers[currentQuestion] = selected;
+
+    const feedback = document.getElementById("feedback");
+
     if (selected === q.correct) {
         score++;
         selectedButton.classList.add("correct");
 
-        document.getElementById("feedback").textContent =
-            "✓ Молодець! " + q.explanation;
-
-        document.getElementById("feedback").style.color = "#55e6a0";
+        feedback.textContent = "✓ Молодець! " + q.explanation;
+        feedback.style.color = "#55e6a0";
     } else {
         selectedButton.classList.add("wrong");
         buttons[q.correct].classList.add("correct");
 
-        document.getElementById("feedback").textContent =
-            "✗ Неправильно! " + q.explanation;
+        feedback.textContent =
+            "✗ Неправильно! Правильна відповідь: " +
+            q.answers[q.correct] + ". " + q.explanation;
 
-        document.getElementById("feedback").style.color = "#ff8792";
-
-        mistakes.push({
-            question: q.question,
-            chosen: q.answers[selected],
-            correct: q.answers[q.correct]
-        });
+        feedback.style.color = "#ff8792";
     }
 
     const nextButton = document.getElementById("next");
@@ -294,22 +431,49 @@ function showResult() {
     document.getElementById("score").textContent =
         `${score} із ${questions.length}`;
 
+    let message;
+
+    if (score === 10) {
+        message = "🏆 Ідеально! Ти справжній знавець хімії!";
+    } else if (score >= 8) {
+        message = "🔥 Відмінний результат! Так тримати!";
+    } else if (score >= 6) {
+        message = "👏 Гарна робота! Ти добре знаєш матеріал.";
+    } else if (score >= 4) {
+        message = "💪 Непогано! Є що повторити.";
+    } else {
+        message = "📚 Не засмучуйся! Повтори матеріал і спробуй ще раз.";
+    }
+
+    document.getElementById("resultMessage").textContent = message;
+
     const review = document.getElementById("review");
 
-    if (mistakes.length === 0) {
+    if (score === 10) {
         review.innerHTML =
             "<h3>Чудова робота! Усі відповіді правильні! 🎉</h3>";
     } else {
-        review.innerHTML = "<h3>Питання, у яких були помилки:</h3>";
+        review.innerHTML = "<h3>Розбір усіх відповідей:</h3>";
 
-        mistakes.forEach((mistake, index) => {
+        questions.forEach((q, index) => {
+            const correct = userAnswers[index] === q.correct;
+
             review.innerHTML += `
-                <p>
-                    <b>${index + 1}. ${mistake.question}</b><br>
-                    Твоя відповідь: ${mistake.chosen}<br>
-                    Правильна відповідь:
-                    <span style="color:#55e6a0">${mistake.correct}</span>
-                </p>
+                <div class="review-item">
+                    <b>${index + 1}. ${q.question}</b><br><br>
+
+                    Твоя відповідь:
+                    <span class="${correct ? "good-text" : "bad-text"}">
+                        ${q.answers[userAnswers[index]]}
+                    </span><br>
+
+                    ${correct
+                        ? '<span class="good-text">✓ Правильно!</span>'
+                        : '<span class="bad-text">✗ Правильна відповідь: ' +
+                          q.answers[q.correct] + '</span>'}
+
+                    <br><br>${q.explanation}
+                </div>
             `;
         });
     }
