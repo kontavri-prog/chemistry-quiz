@@ -4,12 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Квест: Оксиген (O)</title>
+<title>Експрес кейс — Оксиген</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -51,6 +49,21 @@ h1 {
     margin-bottom: 15px;
 }
 
+.progress-bar {
+    height: 8px;
+    background: #244b70;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #75caff;
+    transition: width 0.3s;
+}
+
 .question {
     font-size: 21px;
     line-height: 1.5;
@@ -72,6 +85,7 @@ h1 {
     font-size: 17px;
     cursor: pointer;
     transition: 0.2s;
+    text-align: left;
 }
 
 .answer:hover:not(:disabled) {
@@ -81,6 +95,7 @@ h1 {
 
 .answer:disabled {
     cursor: default;
+    opacity: 1;
 }
 
 .correct {
@@ -94,11 +109,13 @@ h1 {
 }
 
 .feedback {
-    min-height: 30px;
+    display: none;
     margin-top: 20px;
-    font-size: 17px;
-    text-align: center;
-    font-weight: bold;
+    padding: 15px;
+    border-radius: 12px;
+    line-height: 1.5;
+    font-size: 16px;
+    background: #142f50;
 }
 
 .next {
@@ -115,7 +132,7 @@ h1 {
     cursor: pointer;
 }
 
-.next:hover {
+.next:hover, .room:hover {
     background: #27a8f2;
 }
 
@@ -136,6 +153,13 @@ h1 {
     margin: 20px 0;
 }
 
+.review-item {
+    padding: 12px;
+    margin-bottom: 12px;
+    background: #12365d;
+    border-radius: 10px;
+}
+
 .room {
     display: block;
     text-align: center;
@@ -147,10 +171,6 @@ h1 {
     text-decoration: none;
     font-weight: bold;
 }
-
-.room:hover {
-    background: #27a8f2;
-}
 </style>
 </head>
 
@@ -159,15 +179,16 @@ h1 {
 <div class="container">
 
     <div id="quiz">
-        <h1>Квест: Оксиген (O)</h1>
-        <p class="subtitle">Перевір свої знання про Оксиген!</p>
+        <h1>Оксиген (O)</h1>
+        <p class="subtitle">🧪 ЕКСПРЕС КЕЙС</p>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
 
         <div class="progress" id="progress"></div>
-
         <div class="question" id="question"></div>
-
         <div class="answers" id="answers"></div>
-
         <div class="feedback" id="feedback"></div>
 
         <button class="next" id="next" onclick="nextQuestion()">
@@ -176,11 +197,11 @@ h1 {
     </div>
 
     <div class="result" id="result">
-        <h1>Квест завершено!</h1>
+        <h1>Експрес кейс завершено!</h1>
         <p>Твій результат:</p>
 
         <div class="score" id="score"></div>
-
+        <p id="resultText"></p>
         <div class="review" id="review"></div>
 
         <a class="room" href="https://rooms.xyz/kontavri/o2">
@@ -203,30 +224,109 @@ const questions = [
         explanation: "Правильно! Оксиген має 8 електронів, які розподіляються так: 1s² 2s² 2p⁴."
     },
     {
-        question: "Скільки атомів Оксигену міститься в одній молекулі звичайного кисню O₂?",
+        question: "Який ступінь окиснення Оксиген найчастіше має у своїх сполуках, наприклад у воді H₂O?",
         answers: [
-            "1 атом",
-            "2 атоми",
-            "3 атоми"
+            "+2",
+            "−2",
+            "−1",
+            "+1"
         ],
         correct: 1,
-        explanation: "Молодець! Формула O₂ означає, що молекула складається з двох атомів Оксигену."
+        explanation: "У більшості сполук Оксиген має ступінь окиснення −2. У воді два атоми Гідрогену мають сумарно +2, тому Оксиген має −2."
     },
     {
-        question: "Чому кисень підтримує горіння більшості речовин?",
+        question: "Який ступінь окиснення Оксиген має в пероксиді водню H₂O₂?",
         answers: [
-            "Тому що сам є горючою речовиною.",
-            "Тому що вступає в реакції окиснення з багатьма речовинами.",
-            "Тому що не вступає в хімічні реакції."
+            "−2",
+            "+2",
+            "−1",
+            "0"
+        ],
+        correct: 2,
+        explanation: "У пероксидах Оксиген має ступінь окиснення −1. H₂O₂ є типовим прикладом такої сполуки."
+    },
+    {
+        question: "Яку валентність найчастіше проявляє Оксиген у сполуках, наприклад у воді?",
+        answers: [
+            "I",
+            "II",
+            "III",
+            "IV"
         ],
         correct: 1,
-        explanation: "Чудово! Кисень є окисником і підтримує горіння, реагуючи з іншими речовинами. При цьому виділяється енергія у вигляді тепла та світла."
+        explanation: "Оксиген у більшості сполук двовалентний. У молекулі води він утворює два хімічні зв'язки з атомами Гідрогену."
+    },
+    {
+        question: "Які фізичні властивості має кисень за звичайних умов?",
+        answers: [
+            "Безбарвний газ без запаху",
+            "Жовта тверда речовина",
+            "Синя рідина",
+            "Червоний газ із різким запахом"
+        ],
+        correct: 0,
+        explanation: "Кисень O₂ за звичайних умов — безбарвний газ без запаху і смаку."
+    },
+    {
+        question: "Якого кольору рідкий кисень?",
+        answers: [
+            "Червоного",
+            "Зеленого",
+            "Блакитного",
+            "Чорного"
+        ],
+        correct: 2,
+        explanation: "Рідкий кисень має блакитний колір. Його отримують за дуже низької температури, приблизно −183 °C."
+    },
+    {
+        question: "Що утворюється під час реакції магнію з киснем?",
+        answers: [
+            "Магній оксид MgO",
+            "Магній хлорид MgCl₂",
+            "Водень H₂",
+            "Вуглекислий газ CO₂"
+        ],
+        correct: 0,
+        explanation: "Магній активно реагує з киснем і утворює магній оксид: 2Mg + O₂ → 2MgO."
+    },
+    {
+        question: "Що відбувається під час взаємодії кисню з воднем?",
+        answers: [
+            "Утворюється амоніак",
+            "Утворюється вода",
+            "Утворюється кухонна сіль",
+            "Утворюється вуглекислий газ"
+        ],
+        correct: 1,
+        explanation: "Водень реагує з киснем з утворенням води: 2H₂ + O₂ → 2H₂O. Ця реакція супроводжується виділенням енергії."
+    },
+    {
+        question: "Як називаються дві основні алотропні форми Оксигену?",
+        answers: [
+            "Алмаз і графіт",
+            "Кисень O₂ та озон O₃",
+            "Білий і червоний фосфор",
+            "Ромбічна та моноклінна сірка"
+        ],
+        correct: 1,
+        explanation: "Оксиген утворює дві алотропні форми: звичайний кисень O₂ та озон O₃. Вони мають різну кількість атомів у молекулі та різні властивості."
+    },
+    {
+        question: "Де використовують кисень завдяки його здатності підтримувати дихання?",
+        answers: [
+            "У медичних кисневих балонах для допомоги пацієнтам",
+            "Для виготовлення кухонної солі",
+            "Як основний компонент харчового цукру",
+            "Для гасіння всіх видів пожеж"
+        ],
+        correct: 0,
+        explanation: "Кисень використовують у медицині для кисневої терапії, коли пацієнтам потрібно забезпечити додаткове надходження кисню."
     }
 ];
 
 let currentQuestion = 0;
 let score = 0;
-let mistakes = [];
+let userAnswers = [];
 
 function showQuestion() {
     const q = questions[currentQuestion];
@@ -234,9 +334,12 @@ function showQuestion() {
     document.getElementById("progress").textContent =
         `Питання ${currentQuestion + 1} із ${questions.length}`;
 
+    document.getElementById("progressFill").style.width =
+        `${(currentQuestion / questions.length) * 100}%`;
+
     document.getElementById("question").textContent = q.question;
 
-    document.getElementById("feedback").textContent = "";
+    document.getElementById("feedback").style.display = "none";
     document.getElementById("next").style.display = "none";
 
     const answersDiv = document.getElementById("answers");
@@ -245,40 +348,40 @@ function showQuestion() {
     q.answers.forEach((answer, index) => {
         const button = document.createElement("button");
         button.className = "answer";
-        button.textContent = answer;
-
-        button.onclick = () => checkAnswer(index, button);
+        button.textContent = String.fromCharCode(65 + index) + ") " + answer;
+        button.onclick = () => checkAnswer(index);
 
         answersDiv.appendChild(button);
     });
 }
 
-function checkAnswer(selected, selectedButton) {
+function checkAnswer(selected) {
     const q = questions[currentQuestion];
     const buttons = document.querySelectorAll(".answer");
 
     buttons.forEach(button => button.disabled = true);
+    userAnswers[currentQuestion] = selected;
+
+    const feedback = document.getElementById("feedback");
 
     if (selected === q.correct) {
         score++;
-        selectedButton.classList.add("correct");
-        document.getElementById("feedback").textContent =
-            "✓ " + q.explanation;
-        document.getElementById("feedback").style.color = "#55e6a0";
+        buttons[selected].classList.add("correct");
+        feedback.innerHTML = "✅ Правильно!<br>" + q.explanation;
+        feedback.style.color = "#55e6a0";
     } else {
-        selectedButton.classList.add("wrong");
+        buttons[selected].classList.add("wrong");
         buttons[q.correct].classList.add("correct");
 
-        document.getElementById("feedback").textContent =
-            "✗ Неправильно! " + q.explanation;
-        document.getElementById("feedback").style.color = "#ff8792";
+        feedback.innerHTML =
+            "❌ Неправильно!<br>" +
+            "Правильна відповідь: " + q.answers[q.correct] +
+            "<br>" + q.explanation;
 
-        mistakes.push({
-            question: q.question,
-            chosen: q.answers[selected],
-            correct: q.answers[q.correct]
-        });
+        feedback.style.color = "#ff8792";
     }
+
+    feedback.style.display = "block";
 
     const nextButton = document.getElementById("next");
     nextButton.textContent =
@@ -306,24 +409,37 @@ function showResult() {
     document.getElementById("score").textContent =
         `${score} із ${questions.length}`;
 
+    document.getElementById("resultText").textContent =
+        score === questions.length
+        ? "Ідеальний результат! 🏆"
+        : score >= 8
+        ? "Чудова робота! 🔥"
+        : score >= 6
+        ? "Молодець! 👍"
+        : score >= 4
+        ? "Непогано! Повтори матеріал."
+        : "Не засмучуйся! Повтори матеріал і спробуй ще раз.";
+
     const review = document.getElementById("review");
+    review.innerHTML = "<h3>Розбір відповідей:</h3>";
 
-    if (mistakes.length === 0) {
-        review.innerHTML = "<h3>Чудова робота! Усі відповіді правильні! 🎉</h3>";
-    } else {
-        review.innerHTML = "<h3>Питання, у яких були помилки:</h3>";
+    questions.forEach((q, index) => {
+        const chosen = userAnswers[index];
 
-        mistakes.forEach((mistake, index) => {
-            review.innerHTML += `
-                <p>
-                    <b>${index + 1}. ${mistake.question}</b><br>
-                    Твоя відповідь: ${mistake.chosen}<br>
-                    Правильна відповідь: <span style="color:#55e6a0">
-                    ${mistake.correct}</span>
-                </p>
-            `;
-        });
-    }
+        const item = document.createElement("div");
+        item.className = "review-item";
+
+        item.innerHTML = `
+            <b>${index + 1}. ${q.question}</b><br>
+            Твоя відповідь: ${q.answers[chosen]}<br>
+            ${chosen === q.correct
+                ? "✅ Правильно!"
+                : "❌ Правильна відповідь: " + q.answers[q.correct]}
+            <br><small>${q.explanation}</small>
+        `;
+
+        review.appendChild(item);
+    });
 }
 
 showQuestion();
@@ -331,3 +447,5 @@ showQuestion();
 
 </body>
 </html>
+
+
