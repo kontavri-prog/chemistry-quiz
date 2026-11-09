@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Квест: Флуор (F)</title>
+<title>Експрес кейс — Флуор (F)</title>
 
 <style>
 * { box-sizing: border-box; }
@@ -70,6 +70,7 @@ h1 {
     font-size: 17px;
     cursor: pointer;
     transition: 0.2s;
+    text-align: left;
 }
 
 .answer:hover:not(:disabled) {
@@ -93,7 +94,8 @@ h1 {
     min-height: 30px;
     margin-top: 20px;
     font-size: 17px;
-    text-align: center;
+    text-align: left;
+    line-height: 1.5;
     font-weight: bold;
 }
 
@@ -130,6 +132,13 @@ h1 {
     margin: 20px 0;
 }
 
+.review-item {
+    padding: 14px;
+    margin-bottom: 12px;
+    background: rgba(255,255,255,.07);
+    border-radius: 12px;
+}
+
 .room {
     display: block;
     text-align: center;
@@ -150,8 +159,8 @@ h1 {
 <div class="container">
 
     <div id="quiz">
-        <h1>Квест: Флуор (F)</h1>
-        <p class="subtitle">Перевір свої знання про Флуор!</p>
+        <h1>🧪 Флуор (F)</h1>
+        <p class="subtitle">ЕКСПРЕС КЕЙС</p>
 
         <div class="progress" id="progress"></div>
         <div class="question" id="question"></div>
@@ -164,7 +173,7 @@ h1 {
     </div>
 
     <div class="result" id="result">
-        <h1>Квест завершено!</h1>
+        <h1>Експрес кейс завершено!</h1>
         <p>Твій результат:</p>
 
         <div class="score" id="score"></div>
@@ -190,30 +199,109 @@ const questions = [
         explanation: "Атом Флуору має 9 електронів: 2 на першому рівні та 7 на другому."
     },
     {
-        question: "До якої групи хімічних елементів належить Флуор?",
+        question: "Який ступінь окиснення Флуор має у сполуці HF?",
         answers: [
-            "Лужні метали",
-            "Інертні гази",
-            "Галогени"
-        ],
-        correct: 2,
-        explanation: "Флуор належить до галогенів — елементів 17-ї групи періодичної системи."
-    },
-    {
-        question: "Яка формула простої речовини, утвореної атомами Флуору?",
-        answers: [
-            "F",
-            "F₂",
-            "F₃"
+            "+1",
+            "−1",
+            "+2",
+            "0"
         ],
         correct: 1,
-        explanation: "Проста речовина Флуор складається з двоатомних молекул F₂."
+        explanation: "Флуор у сполуках завжди має ступінь окиснення −1, оскільки є найелектронегативнішим елементом."
+    },
+    {
+        question: "Який ступінь окиснення має Флуор у простій речовині F₂?",
+        answers: [
+            "−1",
+            "+1",
+            "0",
+            "+2"
+        ],
+        correct: 2,
+        explanation: "У простих речовинах ступінь окиснення кожного атома дорівнює 0. Тому у F₂ Флуор має ступінь окиснення 0."
+    },
+    {
+        question: "Яку валентність проявляє Флуор у сполуках?",
+        answers: [
+            "I",
+            "II",
+            "III",
+            "IV"
+        ],
+        correct: 0,
+        explanation: "Флуор у сполуках одновалентний — утворює один хімічний зв'язок."
+    },
+    {
+        question: "Які фізичні властивості характерні для Флуору за звичайних умов?",
+        answers: [
+            "Безбарвна рідина",
+            "Жовтуватий газ із різким запахом",
+            "Сріблястий твердий метал",
+            "Червона тверда речовина"
+        ],
+        correct: 1,
+        explanation: "За звичайних умов проста речовина флуор F₂ — блідо-жовтий, дуже токсичний газ із різким запахом."
+    },
+    {
+        question: "Якою є температура кипіння простого Флуору за нормального атмосферного тиску?",
+        answers: [
+            "Приблизно −188 °C",
+            "Приблизно 0 °C",
+            "Приблизно +100 °C",
+            "Приблизно +59 °C"
+        ],
+        correct: 0,
+        explanation: "Флуор має дуже низьку температуру кипіння — близько −188 °C, тому за кімнатної температури він є газом."
+    },
+    {
+        question: "Що утворюється під час реакції Флуору з воднем?",
+        answers: [
+            "Вода",
+            "Фтороводень HF",
+            "Амоніак NH₃",
+            "Вуглекислий газ CO₂"
+        ],
+        correct: 1,
+        explanation: "Флуор реагує з воднем з утворенням фтороводню: H₂ + F₂ → 2HF. Реакція відбувається дуже бурхливо."
+    },
+    {
+        question: "Як Флуор реагує з водою?",
+        answers: [
+            "Не реагує за жодних умов",
+            "Утворює лише водень",
+            "Утворює фтороводень і кисень",
+            "Утворює кухонну сіль"
+        ],
+        correct: 2,
+        explanation: "Флуор активно реагує з водою: 2F₂ + 2H₂O → 4HF + O₂."
+    },
+    {
+        question: "Чи має проста речовина Флуор відомі алотропні модифікації?",
+        answers: [
+            "Так, алмаз і графіт",
+            "Так, білий і червоний Флуор",
+            "Ні, проста речовина Флуор існує у вигляді молекул F₂",
+            "Так, ромбічний і моноклінний Флуор"
+        ],
+        correct: 2,
+        explanation: "Для простої речовини Флуор характерні двоатомні молекули F₂. Відомих алотропних модифікацій, як у Карбону чи Фосфору, він не має."
+    },
+    {
+        question: "Де використовують сполуки Флуору в повсякденному житті?",
+        answers: [
+            "У зубних пастах для захисту емалі",
+            "Для виробництва кухонного цукру",
+            "Для виготовлення звичайного кисню",
+            "Для очищення золота від домішок"
+        ],
+        correct: 0,
+        explanation: "Сполуки Флуору — фториди — додають до багатьох зубних паст. Вони допомагають зміцнювати зубну емаль і захищати її від карієсу."
     }
 ];
 
 let currentQuestion = 0;
 let score = 0;
-let mistakes = [];
+let userAnswers = [];
 
 function showQuestion() {
     const q = questions[currentQuestion];
@@ -242,29 +330,26 @@ function checkAnswer(selected, selectedButton) {
     const buttons = document.querySelectorAll(".answer");
 
     buttons.forEach(button => button.disabled = true);
+    userAnswers[currentQuestion] = selected;
+
+    const feedback = document.getElementById("feedback");
 
     if (selected === q.correct) {
         score++;
         selectedButton.classList.add("correct");
 
-        document.getElementById("feedback").textContent =
-            "✓ Молодець! " + q.explanation;
-
-        document.getElementById("feedback").style.color = "#55e6a0";
+        feedback.textContent = "✓ Молодець! " + q.explanation;
+        feedback.style.color = "#55e6a0";
     } else {
         selectedButton.classList.add("wrong");
         buttons[q.correct].classList.add("correct");
 
-        document.getElementById("feedback").textContent =
-            "✗ Неправильно! " + q.explanation;
+        feedback.textContent =
+            "✗ Неправильно! " +
+            "Правильна відповідь: " + q.answers[q.correct] +
+            ". " + q.explanation;
 
-        document.getElementById("feedback").style.color = "#ff8792";
-
-        mistakes.push({
-            question: q.question,
-            chosen: q.answers[selected],
-            correct: q.answers[q.correct]
-        });
+        feedback.style.color = "#ff8792";
     }
 
     const nextButton = document.getElementById("next");
@@ -296,20 +381,24 @@ function showResult() {
 
     const review = document.getElementById("review");
 
-    if (mistakes.length === 0) {
+    if (score === questions.length) {
         review.innerHTML =
             "<h3>Чудова робота! Усі відповіді правильні! 🎉</h3>";
     } else {
-        review.innerHTML = "<h3>Питання, у яких були помилки:</h3>";
+        review.innerHTML = "<h3>Розбір відповідей:</h3>";
 
-        mistakes.forEach((mistake, index) => {
+        questions.forEach((q, index) => {
+            const chosen = userAnswers[index];
+
             review.innerHTML += `
-                <p>
-                    <b>${index + 1}. ${mistake.question}</b><br>
-                    Твоя відповідь: ${mistake.chosen}<br>
-                    Правильна відповідь:
-                    <span style="color:#55e6a0">${mistake.correct}</span>
-                </p>
+                <div class="review-item">
+                    <b>${index + 1}. ${q.question}</b><br>
+                    Твоя відповідь: ${q.answers[chosen]}<br>
+                    ${chosen === q.correct
+                        ? "✅ Правильно!"
+                        : "❌ Правильна відповідь: " + q.answers[q.correct]}
+                    <br><small>${q.explanation}</small>
+                </div>
             `;
         });
     }
